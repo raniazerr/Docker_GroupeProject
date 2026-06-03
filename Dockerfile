@@ -1,20 +1,13 @@
-# Utilisation d'une image de base Node.js
-FROM node:18
-
-# Création du répertoire de travail dans le conteneur
+# Stage 1 : Installation des dépendances
+FROM node:18-alpine AS builder
 WORKDIR /app
-
-# Copie des fichiers du projet dans le conteneur
 COPY package*.json ./
+RUN npm ci --only=production
 
-# Installation des dépendances
-RUN npm install
-
-# Copie du reste des fichiers dans le conteneur
-COPY . .
-
-# Exposition du port utilisé par l'application
+# Stage 2 : Image de production légère
+FROM node:18-alpine
+WORKDIR /app
+COPY --from=builder /app/node_modules ./node_modules
+COPY src/ ./src/
 EXPOSE 3000
-
-# Commande pour démarrer l'application
-CMD ["npm", "start"]
+CMD ["node", "src/app.js"]
