@@ -1,0 +1,10 @@
+deploy-k3s:
+stage: deploy
+image: bitnami/kubectl:latest
+before_script:
+# TODO : charger le kubeconfig depuis la variable KUBE_CONFIG
+script:
+# TODO : kubectl set image deployment/todo-api ... avec le tag du commit
+# TODO : kubectl rollout status pour attendre la fin du déploiement
+rules:
+- if: '$CI_COMMIT_BRANCH == "main"' 
