@@ -1,8 +1,9 @@
 # Todo API - Pipeline CI/CD (projet groupe)
 
 ## Membres
-- Prénom Nom (@pseudo-gitlab)
-- ...
+- Rania Zeramdini
+- Thomas Rivoire
+- Nolan Lefebvre
 ## Image DockerHub
 `<pseudo-dockerhub>/todo-api`
 ## Déploiement
