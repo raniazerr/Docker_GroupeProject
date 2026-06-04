@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build & Push Docker Image
 
 on:
   push:
@@ -10,8 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Login Docker Hub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USER }}" --password-stdin
@@ -22,8 +21,7 @@ jobs:
             -t ${{ secrets.DOCKERHUB_USER }}/todo-api:${{ github.sha }} \
             -t ${{ secrets.DOCKERHUB_USER }}/todo-api:latest .
 
-      - name: Push SHA tag
-        run: docker push ${{ secrets.DOCKERHUB_USER }}/todo-api:${{ github.sha }}
-
-      - name: Push latest tag
-        run: docker push ${{ secrets.DOCKERHUB_USER }}/todo-api:latest
+      - name: Push image
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USER }}/todo-api:${{ github.sha }}
+          docker push ${{ secrets.DOCKERHUB_USER }}/todo-api:latest
