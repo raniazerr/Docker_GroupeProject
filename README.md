@@ -5,7 +5,7 @@
 - Thomas Rivoire
 - Nolan Lefebvre
 ## Image DockerHub
-`<pseudo-dockerhub>/todo-api`
+`thomasr10/todo-api`
 ## Déploiement
 Voir DEPLOYMENT.md
 ## Dashboard Grafana
