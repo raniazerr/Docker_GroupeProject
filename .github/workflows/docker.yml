@@ -30,3 +30,28 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKERHUB_USER }}/todo-api:${{ github.sha }}
           docker push ${{ secrets.DOCKERHUB_USER }}/todo-api:latest
+  deploy-k3s:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: 'latest'
+
+      - name: Load kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
+
+      - name: Update deployment image
+        run: |
+          kubectl set image deployment/todo-api \
+            todo-api=${{ secrets.DOCKERHUB_USER }}/todo-api:${{ github.sha }}
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/todo-api
